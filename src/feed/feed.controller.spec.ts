@@ -23,11 +23,23 @@ describe('FeedController (GET /feed)', () => {
   });
 
   it('feed should return the user feed with a valid JWT', async () => {
-    let res = await request(app.getHttpServer())
-      .post('/auth/login')
-      .send({ email: 'test@gmail.com', password: '12345678' });
+    const resn = await request(app.getHttpServer())
+      .post('/auth/register')
+      .send({
+        email: `test${Date.now()}@gmail.com`,
+        password: '12345678',
+        username: `test${Date.now()}`,
+      })
 
-    jwtToken = res.body.token;
+    jwtToken = resn.body.token;
+
+    await request(app.getHttpServer())
+      .post('/posts')
+      .set('Authorization', `Bearer ${jwtToken}`)
+      .send({
+        title: 'Test Post',
+        text: 'This is a test post.',
+      });
 
     const response = await request(app.getHttpServer())
       .get('/feed')

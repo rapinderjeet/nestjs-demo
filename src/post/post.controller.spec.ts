@@ -25,10 +25,15 @@ describe('PostsController (e2e)', () => {
 
     describe('POST /posts', () => {
         it('post create should create a post with a valid JWT and valid post data', async () => {
-            let res = await request(app.getHttpServer())
-                .post('/auth/login')
-                .send({ email: 'test@gmail.com', password: '12345678' });
-            jwtToken = res.body.token;
+            const resn = await request(app.getHttpServer())
+                .post('/auth/register')
+                .send({
+                    email: `test${Date.now()}@gmail.com`,
+                    password: '12345678',
+                    username: `test${Date.now()}`,
+                })
+
+            jwtToken = resn.body.token;
 
             const postData = {
                 title: 'Test Post',
@@ -58,10 +63,15 @@ describe('PostsController (e2e)', () => {
         });
 
         it('post create should return an error if the post data is invalid', async () => {
-            let res = await request(app.getHttpServer())
-                .post('/auth/login')
-                .send({ email: 'test@gmail.com', password: '12345678' });
-            jwtToken = res.body.token;
+            const resn = await request(app.getHttpServer())
+                .post('/auth/register')
+                .send({
+                    email: `test${Date.now()}@gmail.com`,
+                    password: '12345678',
+                    username: `test${Date.now()}`,
+                })
+
+            jwtToken = resn.body.token;
 
             const response = await request(app.getHttpServer())
                 .post('/posts')
@@ -73,10 +83,15 @@ describe('PostsController (e2e)', () => {
         });
 
         it('post delete should delete a user\'s own post with a valid JWT', async () => {
-            let res = await request(app.getHttpServer())
-                .post('/auth/login')
-                .send({ email: 'test@gmail.com', password: '12345678' });
-            jwtToken = res.body.token;
+            const resn = await request(app.getHttpServer())
+                .post('/auth/register')
+                .send({
+                    email: `test${Date.now()}@gmail.com`,
+                    password: '12345678',
+                    username: `test${Date.now()}`,
+                })
+
+            jwtToken = resn.body.token;
 
             const createPostResponse = await request(app.getHttpServer())
                 .post('/posts')
@@ -96,10 +111,15 @@ describe('PostsController (e2e)', () => {
         });
 
         it('should return a 404 error if the post does not exist', async () => {
-            let res = await request(app.getHttpServer())
-                .post('/auth/login')
-                .send({ email: 'test@gmail.com', password: '12345678' });
-            jwtToken = res.body.token;
+            const resn = await request(app.getHttpServer())
+                .post('/auth/register')
+                .send({
+                    email: `test${Date.now()}@gmail.com`,
+                    password: '12345678',
+                    username: `test${Date.now()}`,
+                })
+
+            jwtToken = resn.body.token;
 
             const response = await request(app.getHttpServer())
                 .delete(`/posts/0000001ec7e3b49ba240eaa8`)
@@ -110,10 +130,15 @@ describe('PostsController (e2e)', () => {
         });
 
         it('should return a 401 error if the user does not have permission to delete the post', async () => {
-            let res = await request(app.getHttpServer())
-                .post('/auth/login')
-                .send({ email: 'test@gmail.com', password: '12345678' });
-            jwtToken = res.body.token;
+            const resn = await request(app.getHttpServer())
+                .post('/auth/register')
+                .send({
+                    email: `test${Date.now()}@gmail.com`,
+                    password: '12345678',
+                    username: `test${Date.now()}`,
+                })
+
+            jwtToken = resn.body.token;
 
             const createPostResponse = await request(app.getHttpServer())
                 .post('/posts')
